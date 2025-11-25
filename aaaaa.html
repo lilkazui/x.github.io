@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <title>Yönetici Paneli — likazui</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root{ --bg-deep:#0A1929; --bg-primary:#112240; --bg-card:#1C335A; --accent-primary:#00A3FF; --accent-success:#00FF8C; --accent-danger:#FF4080; --text-high:rgba(255,255,255,0.98); --text-muted:rgba(255,255,255,0.7); --border-soft:rgba(255,255,255,0.1); --radius:12px; }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:'Inter',sans-serif;background:linear-gradient(135deg,var(--bg-deep),var(--bg-primary));color:var(--text-high);-webkit-font-smoothing:antialiased}
+    .wrap{max-width:1100px;margin:28px auto;padding:20px}
+    .card{background:var(--bg-primary);border-radius:var(--radius);padding:18px;border:1px solid var(--border-soft);box-shadow:0 8px 24px rgba(0,0,0,0.45)}
+    h1{color:var(--accent-primary);margin:0 0 8px}
+    .admin-controls{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px}
+    .field{flex:1 1 200px}
+    input,select,textarea{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text-high)}
+    button{cursor:pointer}
+    table{width:100%;border-collapse:collapse;color:var(--text-high);margin-top:12px}
+    th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.04);text-align:left}
+    th{color:var(--text-muted);font-size:0.9rem}
+    .small{font-size:0.9rem;color:var(--text-muted)}
+    .badge{display:inline-block;padding:4px 8px;border-radius:8px;background:rgba(255,255,255,0.03)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <h1>Yönetici Paneli</h1>
+      <div>
+        <button id="adminLogoutBtn" style="padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid var(--border-soft);color:var(--text-high)">Çıkış</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="small">Hızlı İşlemler</h3>
+      <div class="admin-controls">
+        <div class="field">
+          <label>Kullanıcı Adı</label>
+          <input id="adminUsername" placeholder="işlem yapılacak kullanıcı" />
+        </div>
+        <div class="field">
+          <label>Miktar ($)</label>
+          <input id="adminAmount" type="number" step="0.01" value="10.00" />
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button id="adminAddBtn" style="padding:8px 10px;background:var(--accent-success);border-radius:8px;border:none;color:#08121a">EKLE</button>
+          <button id="adminTakeBtn" style="padding:8px 10px;background:var(--accent-primary);border-radius:8px;border:none;color:white">AL</button>
+          <button id="adminBanBtn" style="padding:8px 10px;background:var(--accent-danger);border-radius:8px;border:none;color:white">BAN/UNBAN</button>
+          <button id="adminPremiumBtn" style="padding:8px 10px;background:linear-gradient(90deg,#FFD400,#FF9A00);border-radius:8px;border:none;color:#08121a">PREMIUM</button>
+        </div>
+      </div>
+      <div id="adminMessage" class="small" style="margin-top:8px;color:var(--text-muted)"></div>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <h3 class="small">Genel Ayarlar</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+        <div style="flex:1;min-width:160px">
+          <label>Günlük Tıklama Limiti</label>
+          <input id="settingDailyClick" type="number" min="1" />
+        </div>
+        <div style="flex:1;min-width:160px">
+          <label>Günlük Kazanç Limiti ($)</label>
+          <input id="settingDailyEarn" type="number" step="0.01" min="0" />
+        </div>
+        <div style="flex:1;min-width:160px">
+          <label>Minimum Çekim ($)</label>
+          <input id="settingMinWithdraw" type="number" step="0.01" min="0" />
+        </div>
+        <div style="align-self:flex-end">
+          <button id="saveSettingsBtn" style="padding:8px 12px;background:var(--accent-primary);color:#021122;border-radius:8px;border:none">Kaydet</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <h3 class="small">Bakım Modu</h3>
+      <div style="display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap;margin-top:8px">
+        <textarea id="maintenanceReasonInput" placeholder="Bakım nedeni" style="flex:1;min-height:56px;padding:8px"></textarea>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button id="enableMaintenanceBtn" style="padding:8px 12px;background:#ff6b6b;color:#08121a;border-radius:8px;border:none">Etkinleştir</button>
+          <button id="disableMaintenanceBtn" style="padding:8px 12px;background:var(--accent-success);color:#021122;border-radius:8px;border:none">Devre Dışı</button>
+        </div>
+      </div>
+      <p id="maintenanceStatusText" class="small" style="margin-top:8px;color:var(--text-muted)">Bakım kapalı.</p>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <h3 class="small">Kuponlar</h3>
+      <div style="display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap">
+        <input id="couponCodeInput" placeholder="Kupon Kodu" style="flex:1;min-width:160px" />
+        <input id="couponPercentInput" type="number" placeholder="%" style="width:120px" />
+        <select id="couponTypeInput" style="width:160px">
+          <option value="balance">Bakiye Bonus</option>
+          <option value="click_bonus">Tıklama Bonus</option>
+        </select>
+        <input id="couponMultiplierInput" type="number" value="2" style="width:120px" />
+        <input id="couponDurationInput" type="number" value="60" style="width:140px" />
+        <input id="couponUsesInput" type="number" placeholder="Kullanım" style="width:140px" />
+        <button id="createCouponBtn" style="padding:8px 12px;background:var(--accent-success);border-radius:8px;border:none;color:#021122">Oluştur</button>
+      </div>
+      <div id="couponList" style="margin-top:10px;color:var(--text-muted)">Yükleniyor...</div>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <h3 class="small">Duyurular</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+        <input id="announceTitleInput" placeholder="Başlık" />
+        <textarea id="announceMsgInput" placeholder="Mesaj" style="min-height:80px;padding:8px"></textarea>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input id="announceExpiresInput" type="number" placeholder="Saniye (boş=kalıcı)" style="width:180px" />
+          <label class="small" style="display:flex;align-items:center;gap:6px"><input id="announceStickyInput" type="checkbox" /> Sticky</label>
+          <button id="createAnnouncementBtn" style="margin-left:auto;padding:8px 12px;background:var(--accent-primary);color:#021122;border-radius:8px;border:none">Duyuru Oluştur</button>
+        </div>
+        <div id="adminAnnouncementList" style="margin-top:8px;color:var(--text-muted)">Yükleniyor...</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <h3 class="small">Kullanıcılar</h3>
+      <table>
+        <thead><tr><th>Kullanıcı</th><th>Bakiye</th><th>Tıklama</th><th>Durum</th><th>Premium</th><th>Rol</th><th>Eylemler</th></tr></thead>
+        <tbody id="userListBody"><tr><td colspan="7" style="text-align:center;color:var(--text-muted)">Yükleniyor...</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <h3 class="small">Çekim Talepleri</h3>
+      <table>
+        <thead><tr><th>ID</th><th>Kullanıcı</th><th>Tutar</th><th>Banka/IBAN</th><th>Tarih</th><th>Durum</th><th>İşlemler</th></tr></thead>
+        <tbody id="requestsBody"><tr><td colspan="7" style="text-align:center;color:var(--text-muted)">Yükleniyor...</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <h3 class="small">Leaderboard</h3>
+      <ol id="leaderboardList" style="margin-top:8px;color:var(--text-high)"></ol>
+    </div>
+
+  </div>
+
+  <script>
+    (function(){
+      const USERS_KEY = 'bio_users_v9';
+      const SETTINGS_KEY = 'bio_settings_v9';
+      const ADMIN_PASSWORD = '123456E';
+      const ADMIN_LOGGED_IN_KEY = 'bio_admin_logged_in_v9';
+
+      // Elements
+      const adminUsernameInput = document.getElementById('adminUsername');
+      const adminAmountInput = document.getElementById('adminAmount');
+      const adminAddBtn = document.getElementById('adminAddBtn');
+      const adminTakeBtn = document.getElementById('adminTakeBtn');
+      const adminBanBtn = document.getElementById('adminBanBtn');
+      const adminPremiumBtn = document.getElementById('adminPremiumBtn');
+      const adminMessage = document.getElementById('adminMessage');
+      const userListBody = document.getElementById('userListBody');
+      const requestsBody = document.getElementById('requestsBody');
+      const couponList = document.getElementById('couponList');
+      const createCouponBtn = document.getElementById('createCouponBtn');
+      const couponCodeInput = document.getElementById('couponCodeInput');
+      const couponPercentInput = document.getElementById('couponPercentInput');
+      const couponTypeInput = document.getElementById('couponTypeInput');
+      const couponUsesInput = document.getElementById('couponUsesInput');
+      const couponMultiplierInput = document.getElementById('couponMultiplierInput');
+      const couponDurationInput = document.getElementById('couponDurationInput');
+      const settingDailyClick = document.getElementById('settingDailyClick');
+      const settingDailyEarn = document.getElementById('settingDailyEarn');
+      const settingMinWithdraw = document.getElementById('settingMinWithdraw');
+      const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+      const maintenanceReasonInput = document.getElementById('maintenanceReasonInput');
+      const enableMaintenanceBtn = document.getElementById('enableMaintenanceBtn');
+      const disableMaintenanceBtn = document.getElementById('disableMaintenanceBtn');
+      const maintenanceStatusText = document.getElementById('maintenanceStatusText');
+      const announceTitleInput = document.getElementById('announceTitleInput');
+      const announceMsgInput = document.getElementById('announceMsgInput');
+      const announceExpiresInput = document.getElementById('announceExpiresInput');
+      const announceStickyInput = document.getElementById('announceStickyInput');
+      const createAnnouncementBtn = document.getElementById('createAnnouncementBtn');
+      const adminAnnouncementList = document.getElementById('adminAnnouncementList');
+      const leaderboardList = document.getElementById('leaderboardList');
+      const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+
+      // Helpers: storage
+      function getUsers(){ try{ const raw = localStorage.getItem(USERS_KEY); return raw ? JSON.parse(raw) : {}; }catch(e){console.error(e); return {}; } }
+      function saveUsers(u){ try{ localStorage.setItem(USERS_KEY, JSON.stringify(u)); }catch(e){console.error(e);} }
+      function getSettings(){ try{ const raw = localStorage.getItem(SETTINGS_KEY); if(!raw) { const defs={ dailyClickLimit:100, dailyEarningsLimit:20, minWithdrawalAmount:60, coupons:[], maintenance:{enabled:false,reason:'',since:null}, announcements:[] }; localStorage.setItem(SETTINGS_KEY,JSON.stringify(defs)); return defs; } const p = JSON.parse(raw); if(typeof p.dailyClickLimit !== 'number') p.dailyClickLimit=100; if(typeof p.dailyEarningsLimit !== 'number') p.dailyEarningsLimit=20; if(typeof p.minWithdrawalAmount !== 'number') p.minWithdrawalAmount=60; if(!Array.isArray(p.coupons)) p.coupons=[]; if(!p.maintenance) p.maintenance={enabled:false,reason:'',since:null}; if(!Array.isArray(p.announcements)) p.announcements=[]; return p;}catch(e){console.error(e); return {dailyClickLimit:100,dailyEarningsLimit:20,minWithdrawalAmount:60,coupons:[],maintenance:{enabled:false,reason:'',since:null},announcements:[]}; } }
+      function saveSettings(s){ try{ localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); }catch(e){console.error(e);} }
+
+      // UI helpers
+      function formatMoney(n){ return '$' + Number(n||0).toFixed(2); }
+      function showAdminMessage(msg, isError=false){ adminMessage.textContent = msg; adminMessage.style.color = isError ? 'var(--accent-danger)' : 'var(--accent-success)'; }
+
+      // Admin actions
+      function renderAdminPanel(){ const users = Object.values(getUsers()); if(!users.length){ userListBody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted)">Kayıtlı kullanıcı yok.</td></tr>'; } else { users.sort((a,b)=>b.balance-a.balance); let html=''; users.forEach(u=>{ html += `<tr><td>${u.username}</td><td><strong style="color:var(--accent-success)">${formatMoney(u.balance)}</strong></td><td>${u.clicks||0}</td><td>${u.isBanned?'<strong style="color:var(--accent-danger)">Yasaklı</strong>':'<strong style="color:var(--accent-success)">Aktif</strong>'}</td><td>${u.premium?'<span class="badge">PREMIUM</span>':'-'}</td><td>${u.role||'user'}</td><td><button onclick="window.adminAction('${u.username}','add',10)" style="padding:6px;border-radius:6px;background:var(--accent-success);color:#08121a;border:none">+10</button> <button onclick="window.adminAction('${u.username}','take',0)" style="padding:6px;border-radius:6px;background:var(--accent-primary);color:#fff;border:none">Sıfırla</button> <button onclick="window.adminAction('${u.username}','banToggle',0)" style="padding:6px;border-radius:6px;background:var(--accent-danger);color:#fff;border:none;margin-left:6px">BAN</button> <button onclick="window.adminAction('${u.username}','togglePremium',0)" style="padding:6px;border-radius:6px;background:linear-gradient(90deg,#FFD400,#FF9A00);color:#08121a;border:none;margin-left:6px">PRE</button></td></tr>`; }); userListBody.innerHTML = html; }
+        renderRequestsTable(); renderCouponsList(); renderAdminAnnouncements(); renderLeaderboard(); const s = getSettings(); settingDailyClick.value = s.dailyClickLimit; settingDailyEarn.value = s.dailyEarningsLimit; settingMinWithdraw.value = s.minWithdrawalAmount; updateMaintenanceUI(); showAdminMessage(''); }
+
+      // adminAction exposed
+      window.adminAction = function(username, actionType, amount){ const users = getUsers(); const user = users[username]; if(!user){ showAdminMessage('Kullanıcı bulunamadı: '+username, true); return; } amount = parseFloat(amount)||0; let msg=''; switch(actionType){ case 'add': user.balance = (user.balance||0)+amount; msg=`${username} hesabına ${formatMoney(amount)} eklendi.`; break; case 'take': user.balance = 0; msg=`${username} bakiyesi sıfırlandı.`; break; case 'banToggle': user.isBanned = !user.isBanned; msg = user.isBanned ? `${username} yasaklandı.` : `${username} yasağı kaldırıldı.`; break; case 'togglePremium': user.premium = !user.premium; msg = user.premium ? `${username} premium verildi.` : `${username} premium kaldırıldı.`; break; default: return; }
+        users[username]=user; saveUsers(users); renderAdminPanel(); showAdminMessage(msg,false); }
+
+      // Requests
+      function renderRequestsTable(){ const users = getUsers(); let all = []; Object.values(users).forEach(u=>{ if(Array.isArray(u.withdrawalRequests)) u.withdrawalRequests.forEach(r=> all.push(r)); }); if(!all.length){ requestsBody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted)">Çekim talebi yok.</td></tr>'; return; } all.sort((a,b)=> new Date(b.createdAt)-new Date(a.createdAt)); let rows=''; all.forEach(r=>{ rows += `<tr><td>${r.id}</td><td>${r.username}</td><td><strong style="color:var(--accent-success)">${formatMoney(r.amount)}</strong></td><td>${r.bank} / ${r.iban||''}</td><td>${new Date(r.createdAt).toLocaleString()}</td><td>${r.status}</td><td>${r.status==='pending'?`<button onclick="window.handleRequestAction('${r.id}','approve')" style="padding:6px;background:var(--accent-success);border-radius:6px;border:none;color:#021122">Onayla</button> <button onclick="window.handleRequestAction('${r.id}','reject')" style="padding:6px;background:var(--accent-danger);border-radius:6px;border:none;color:#fff;margin-left:6px">Reddet</button>`:`<button onclick="window.handleRequestAction('${r.id}','remove')" style="padding:6px;background:rgba(255,255,255,0.03);border-radius:6px;color:var(--text-muted);border:none">Kaldır</button>`}</td></tr>`; }); requestsBody.innerHTML = rows; }
+
+      window.handleRequestAction = function(reqId, action){ const users = getUsers(); let found=false; Object.keys(users).forEach(username=>{ const u = users[username]; if(!Array.isArray(u.withdrawalRequests)) return; u.withdrawalRequests = u.withdrawalRequests.map(r=>{ if(r.id!==reqId) return r; found=true; if(action==='approve'){ r.status='approved'; } else if(action==='reject'){ r.status='rejected'; u.balance = (r.originalBalance||0); } else if(action==='remove'){ r.status='removed'; } return r; }); u.withdrawalRequests = u.withdrawalRequests.filter(rr=> rr.status !== 'removed'); users[username]=u; }); if(!found){ showAdminMessage('Talep bulunamadı: '+reqId, true); return; } saveUsers(users); renderAdminPanel(); showAdminMessage('Talep '+action+' edildi.'); }
+
+      // Coupons
+      function findCoupon(code){ if(!code) return null; const s = getSettings(); return s.coupons.find(c=> c.code.toUpperCase()===code.toUpperCase()) || null; }
+      function renderCouponsList(){ const s = getSettings(); if(!s.coupons || !s.coupons.length){ couponList.innerHTML = '<div style="color:var(--text-muted)">Kupon yok.</div>'; return; } let out='<ul style="padding-left:18px;margin:0">'; s.coupons.forEach(c=>{ let info = c.type==='balance' ? `+${c.percent}%` : `${c.multiplier}x — ${c.durationSeconds||0}s`; out += `<li style="margin-bottom:6px">${c.code} — ${info} ${c.uses!==null?`— Kalan: ${c.uses}`:''} <button onclick="window.removeCoupon('${c.code}')" style="margin-left:8px;padding:6px;border-radius:6px;background:rgba(255,255,255,0.03);border:none;color:var(--text-muted)">Kaldır</button></li>`; }); out += '</ul>'; couponList.innerHTML = out; }
+      window.removeCoupon = function(code){ const s = getSettings(); s.coupons = s.coupons.filter(c=> c.code.toUpperCase() !== code.toUpperCase()); saveSettings(s); renderCouponsList(); showAdminMessage(code+' kaldırıldı.'); }
+
+      createCouponBtn.addEventListener('click', ()=>{ const code = (couponCodeInput.value||'').trim(); const percent = parseFloat(couponPercentInput.value)||0; const uses = couponUsesInput.value ? parseInt(couponUsesInput.value,10) : null; const type = couponTypeInput.value || 'balance'; const multiplier = couponMultiplierInput.value ? parseFloat(couponMultiplierInput.value) : 1; const durationSeconds = couponDurationInput.value ? parseInt(couponDurationInput.value,10) : null; if(!code){ showAdminMessage('Kupon girin.', true); return; } if(type==='balance' && percent<=0){ showAdminMessage('% değer girin.', true); return; } if(type==='click_bonus' && (!multiplier || multiplier<=1 || !durationSeconds)){ showAdminMessage('Çarpan ve süre gerekli.', true); return; } const s = getSettings(); if(s.coupons.find(c=> c.code.toUpperCase()===code.toUpperCase())){ showAdminMessage('Aynı kod mevcut.', true); return; } const cobj = { code: code.toUpperCase(), percent: percent, uses: uses===null?null:uses, createdAt: new Date().toISOString(), type: type, multiplier: type==='click_bonus'?Number(multiplier):1, durationSeconds: type==='click_bonus'?Number(durationSeconds):null }; s.coupons.push(cobj); saveSettings(s); couponCodeInput.value=''; couponPercentInput.value=''; couponUsesInput.value=''; couponMultiplierInput.value='2'; couponDurationInput.value='60'; renderCouponsList(); showAdminMessage('Kupon oluşturuldu.'); });
+
+      // Announcements
+      function getAnnouncements(){ return getSettings().announcements || []; }
+      function saveAnnouncements(arr){ const s = getSettings(); s.announcements = arr; saveSettings(s); }
+      function createAnnouncement(title,msg,duration,sticky){ if(!title||!msg) return {ok:false,msg:'Başlık ve mesaj gerekli.'}; const id='ann_'+Date.now().toString(36); const createdAt=new Date().toISOString(); const expiresAt = duration && duration>0 ? Date.now()+duration*1000 : null; const ann={id,title: title.trim(),message:msg.trim(),createdAt,expiresAt,sticky:!!sticky,visible:true}; const anns = getAnnouncements(); anns.unshift(ann); saveAnnouncements(anns); return {ok:true,ann}; }
+      function renderAdminAnnouncements(){ const anns = getAnnouncements(); if(!anns || !anns.length){ adminAnnouncementList.innerHTML = '<div style="color:var(--text-muted)">Henüz duyuru yok.</div>'; return; } let out='<ul style="padding-left:18px;margin:0">'; anns.forEach(a=>{ const expiresText = a.expiresAt ? ` — Son: ${new Date(a.expiresAt).toLocaleString()}` : ''; out += `<li style="margin-bottom:8px"><strong>${a.title}</strong><br><span style="color:var(--text-muted)">${a.message}</span><br><small style="color:var(--text-muted)">${new Date(a.createdAt).toLocaleString()}${expiresText}</small><br><div style="margin-top:6px"><button onclick="window.adminToggleAnnouncement('${a.id}')" style="padding:6px;border-radius:6px;border:none;background:${a.visible? 'var(--accent-danger)' : 'var(--accent-success)'};color:#021122">${a.visible? 'Gizle' : 'Yayımla'}</button> <button onclick="window.adminRemoveAnnouncement('${a.id}')" style="padding:6px;border-radius:6px;background:rgba(255,255,255,0.03);border:none;color:var(--text-muted);margin-left:6px">Kaldır</button></div></li>`; }); out += '</ul>'; adminAnnouncementList.innerHTML = out; }
+
+      window.adminRemoveAnnouncement = function(id){ let anns = getAnnouncements(); anns = anns.filter(a=> a.id!==id); saveAnnouncements(anns); renderAdminAnnouncements(); }
+      window.adminToggleAnnouncement = function(id){ const anns = getAnnouncements(); const idx = anns.findIndex(a=> a.id===id); if(idx===-1) return; anns[idx].visible = !anns[idx].visible; saveAnnouncements(anns); renderAdminAnnouncements(); }
+
+      createAnnouncementBtn.addEventListener('click', ()=>{ const title = announceTitleInput.value.trim(); const msg = announceMsgInput.value.trim(); const duration = announceExpiresInput.value ? parseInt(announceExpiresInput.value,10) : null; const sticky = announceStickyInput.checked; if(!title||!msg){ showAdminMessage('Başlık ve mesaj girin.', true); return; } const res = createAnnouncement(title,msg,duration,sticky); if(!res.ok){ showAdminMessage(res.msg||'Hata', true); return; } announceTitleInput.value=''; announceMsgInput.value=''; announceExpiresInput.value=''; announceStickyInput.checked=false; renderAdminAnnouncements(); showAdminMessage('Duyuru oluşturuldu.'); });
+
+      // Maintenance
+      enableMaintenanceBtn.addEventListener('click', ()=>{ const reason = (maintenanceReasonInput.value||'').trim(); if(!reason){ showAdminMessage('Bakım nedeni girin.', true); return; } const s = getSettings(); s.maintenance = { enabled:true, reason, since: new Date().toISOString() }; saveSettings(s); updateMaintenanceUI(); renderAdminPanel(); showAdminMessage('Bakım etkinleştirildi.'); });
+      disableMaintenanceBtn.addEventListener('click', ()=>{ const s = getSettings(); s.maintenance = { enabled:false, reason:'', since:null }; saveSettings(s); updateMaintenanceUI(); renderAdminPanel(); showAdminMessage('Bakım devre dışı bırakıldı.'); });
+
+      function updateMaintenanceUI(){ const info = getSettings().maintenance || {enabled:false}; maintenanceStatusText.textContent = info.enabled ? `Bakım: ${info.reason} — Başladı: ${new Date(info.since).toLocaleString()}` : 'Bakım kapalı.'; maintenanceReasonInput.value = info.reason || ''; }
+
+      // Settings save
+      saveSettingsBtn.addEventListener('click', ()=>{ const s = getSettings(); s.dailyClickLimit = parseInt(settingDailyClick.value,10) || 100; s.dailyEarningsLimit = parseFloat(settingDailyEarn.value) || 20; s.minWithdrawalAmount = parseFloat(settingMinWithdraw.value) || 60; saveSettings(s); showAdminMessage('Ayarlar kaydedildi.'); renderAdminPanel(); });
+
+      // Leaderboard
+      function renderLeaderboard(limit=10){ const users = Object.values(getUsers()); if(!users.length){ leaderboardList.innerHTML = '<li style="color:var(--text-muted)">Kayıtlı kullanıcı yok.</li>'; return; } users.sort((a,b)=> b.balance - a.balance); const top = users.slice(0,limit); leaderboardList.innerHTML = top.map(u=>`<li style="margin-bottom:6px"><strong>${u.username}</strong> — ${formatMoney(u.balance)} ${u.premium?'<span style="color:#FFD400;padding:2px 6px;border-radius:6px;margin-left:8px">PREMIUM</span>':''}</li>`).join(''); }
+
+      // Admin auth (simple prompt)
+      function ensureAdmin(){ if(localStorage.getItem(ADMIN_LOGGED_IN_KEY)=== 'true') return true; const pw = prompt('Admin şifresi (basit doğrulama):'); if(pw===ADMIN_PASSWORD){ localStorage.setItem(ADMIN_LOGGED_IN_KEY,'true'); return true; } alert('Hatalı şifre'); return false; }
+
+      adminLogoutBtn.addEventListener('click', ()=>{ localStorage.removeItem(ADMIN_LOGGED_IN_KEY); alert('Admin çıkış yapıldı'); location.reload(); });
+
+      // init
+      function init(){ if(!ensureAdmin()) return; renderAdminPanel(); }
+      window.addEventListener('load', init);
+
+    })();
+  </script>
+</body>
+</html>

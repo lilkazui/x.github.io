@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <title>emir2MİNN</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- maintenance / announcement banners -->
+  <div class="maintenance-banner" id="maintenanceBanner" role="status" aria-live="polite">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div style="font-weight:900; font-size:1.1rem;">SUNUCU BAKIM MODU</div>
+      <div style="flex:1;">
+        <div class="maintenance-reason" id="maintenanceReasonText"></div>
+        <div class="maintenance-sub" id="maintenanceSinceText"></div>
+      </div>
+      <div>
+        <button id="closeMaintBannerBtn" class="small-btn">Gizle</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="announcement-banner" id="announcementBanner" role="region" aria-live="polite">
+    <div style="display:flex; align-items:center; gap:12px; width:100%;">
+      <div style="flex:1;">
+        <div class="announcement-title" id="announcementTitleText"></div>
+        <div class="announcement-msg" id="announcementMsgText"></div>
+      </div>
+      <div>
+        <button id="closeAnnouncementBtn" class="small-btn">Kapat</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <a href="yonetici-panel.html" id="adminLoginLink" class="admin-link">YÖNETİCİ PANELİ</a>
+
+    <header class="header">
+      <h1 class="logo">Premium Yönetim Paneli <span class="muted">V9.4</span></h1>
+      <p class="subtitle">Kullanıcı Kayıt, Tıklama Bazlı Kazanım ve Yönetim Sistemi</p>
+    </header>
+
+    <div id="appView">
+      <div id="mainContent" style="display: none;">
+
+        <div class="left-panel">
+
+          <div class="card profile" role="main">
+            <section class="profile" aria-labelledby="profile-heading" style="display:flex; gap:12px; align-items:center;">
+              <div class="avatar" id="avatar" aria-hidden="true">US</div>
+              <div class="info" style="flex:1">
+                <h2 class="name" id="displayName">Kullanıcı Adı <span id="profilePremiumBadge" class="badge premium-badge" style="display:none;">PREMIUM</span></h2>
+                <p class="desc" id="statusDesc">Giriş Başarılı. Yeni bir tıklama yapmaya hazırsınız.</p>
+                <div id="activeCouponArea" style="margin-top:8px;"></div>
+              </div>
+            </section>
+          </div>
+
+          <div class="card earnings">
+            <p class="highlight">Mevcut İstatistikler: <span class="badge" id="limitBadge">Günlük Limit: 100 tıklama / $20</span></p>
+            <div class="meter" aria-hidden="false">
+              <div class="value" title="Tıklama sayısı">
+                <div class="value-group">
+                    <div class="clicks" id="clickCount">0</div>
+                    <div class="label">Toplam Tıklama</div>
+                </div>
+              </div>
+              <div class="value" title="Kazanılan tutar">
+                <div class="value-group">
+                    <div class="money" id="moneyEarned">$0.00</div>
+                    <div class="label">Kazanılan Bakiye</div>
+                </div>
+              </div>
+
+              <div class="progressRow">
+                <div class="progressLabel"><span>Günlük Tıklama</span><span id="clickRemainText">0/0</span></div>
+                <div class="progress"><div id="clickFill" class="fill"></div></div>
+
+                <div class="progressLabel"><span>Günlük Kazanç</span><span id="earnRemainText">$0.00</span></div>
+                <div class="progress"><div id="earnFill" class="fill"></div></div>
+              </div>
+
+            </div>
+            <div style="display:flex; gap:10px; justify-content:center; margin-top:8px;">
+              <button id="logoutBtn" class="logout-btn">Çıkış Yap (<span id="logoutUsername"></span>)</button>
+            </div>
+            <p class="hint">Not: Veriler sadece tarayıcınızda (localStorage) saklanır.</p>
+          </div>
+
+        </div>
+
+        <div class="right-panel">
+
+          <div class="card cta-card">
+            <p class="cta-title">KAZANMA İŞLEMİNİ BAŞLAT</p>
+            <button id="clickBtn" class="cta" aria-pressed="false" aria-label="Tıkla ve kazan">
+              <span id="clickBtnText">TIKLA VE KAZAN</span> <span id="cooldownText" style="margin-left: 10px; font-weight: 500; display: none;">(Bekle)</span>
+            </button>
+            <div class="muted small-note">Günlük limit aşıldığında tıklama geçici olarak engellenir (premium kullanıcılar için sınırsız).</div>
+          </div>
+
+          <footer class="footer" role="contentinfo">
+            <form id="userForm" class="payform card" onsubmit="return false;" autocomplete="on" novalidate>
+              <div class="field">
+                <label for="firstname">AD</label>
+                <input id="firstname" name="firstname" type="text" placeholder="Adınız" inputmode="text" />
+              </div>
+              <div class="field">
+                <label for="lastname">SOYAD</label>
+                <input id="lastname" name="lastname" type="text" placeholder="Soyadınız" inputmode="text" />
+              </div>
+
+              <div class="field">
+                  <label for="bankSelect">BANKA SEÇİMİ</label>
+                  <select id="bankSelect" name="bankSelect">
+                      <option value="" selected disabled>Banka Seçiniz</option>
+                      <option value="Akbank">Akbank</option>
+                      <option value="Halkbank">Halkbank</option>
+                      <option value="Ziraat">Ziraat Bankası</option>
+                      <option value="Garanti">Garanti BBVA</option>
+                      <option value="Papara">Papara (Özel)</option>
+                  </select>
+              </div>
+
+              <div class="ibanBlock">
+                <label for="ibanInput">IBAN NUMARASI</label>
+                <div class="ibanRow">
+                  <input id="ibanInput" class="ibanInput" name="iban" type="text" placeholder="TR00 0000 0000 0000 0000 0000 00" inputmode="text" aria-describedby="ibanHelp" maxlength="42"/>
+                  <button id="clearIban" type="button" title="Temizle" aria-label="IBAN'ı temizle" class="clearIbanBtn">🗑️</button>
+                </div>
+                <div id="ibanInvalid" class="ibanInvalid" aria-live="polite" style="display:none; color: var(--accent-danger); font-size: 0.85rem; margin-top: 6px;"></div>
+              </div>
+
+              <div class="field" style="grid-column: span 2;">
+                <label for="couponInput">Kupon Kodu (isteğe bağlı)</label>
+                <div style="display:flex; gap:8px;">
+                  <input id="couponInput" type="text" placeholder="Kupon kodunu girin" />
+                  <button id="applyCouponBtn" type="button" class="apply-coupon-btn">Uygula</button>
+                </div>
+                <div id="couponInfo" style="margin-top:6px; color:var(--text-muted); font-size:0.85rem;"></div>
+              </div>
+
+              <button id="withdrawBtn" type="button" class="withdrawalBtn" disabled aria-label="Çekim talebi oluştur">
+                  $0.00 Çekim Talep Et
+              </button>
+
+              <div class="withdrawal-info">Minimum Çekim Limiti: <strong style="color:var(--accent-success);"><span id="minWithdrawalText">$60.00</span></strong>.</div>
+            </form>
+          </footer>
+
+        </div>
+      </div>
+
+      <div id="authView">
+        <div class="form-container auth-form card" style="max-width:420px; margin:auto;">
+          <h2 id="authTitle">Kullanıcı Girişi</h2>
+          <form id="authForm">
+            <label for="authUsername">Kullanıcı Adı:</label>
+            <input type="text" id="authUsername" required placeholder="Kullanıcı adınızı girin" />
+
+            <label for="authPassword">Şifre:</label>
+            <input type="password" id="authPassword" required placeholder="Şifrenizi girin" />
+
+            <div id="authMessage" class="message error" style="display: none;"></div>
+
+            <button type="submit" id="authSubmitBtn" class="cta-login">Giriş Yap</button>
+
+            <div class="switch-auth" style="margin-top:8px;">
+              <p id="switchText" class="small">Hesabınız yok mu? <button type="button" onclick="window.switchAuthMode()" class="link-btn">Kayıt Ol</button></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="successOverlay" class="success-overlay" style="display:none;">
+      <div class="confetti-effect">✅</div>
+      <div class="success-message">ÇEKİM TALEBİ OLUŞTURULDU!</div>
+      <div class="success-details" id="successDetails"></div>
+      <button onclick="closeSuccessOverlay()" class="cta small-cta">PENCEREYİ KAPAT</button>
+  </div>
+
+  <div id="toastContainer" aria-live="polite"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

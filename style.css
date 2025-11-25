@@ -1,0 +1,119 @@
+:root{
+  --bg-deep: #0A1929;
+  --bg-primary: #112240;
+  --bg-card: #1C335A;
+
+  --accent-primary: #00A3FF;
+  --accent-success: #00FF8C;
+  --accent-danger: #FF4080;
+
+  --text-high: rgba(255,255,255,0.98);
+  --text-muted: rgba(255,255,255,0.7);
+  --border-soft: rgba(255,255,255,0.1);
+
+  --radius: 16px;
+  --gap: 20px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:'Inter', sans-serif;background: linear-gradient(135deg, var(--bg-deep), var(--bg-primary));color:var(--text-high);-webkit-font-smoothing:antialiased; transition: all 0.35s;}
+body{display:flex;align-items:center;justify-content:center;padding:24px}
+.page{width:100%;max-width:1100px;position:relative}
+
+/* Header */
+.header{text-align:center;margin-bottom:34px;}
+.logo{margin:0;color:var(--accent-primary);font-weight:900;letter-spacing:1px;font-size:2.0rem; text-shadow: 0 0 10px rgba(0, 163, 255, 0.3); line-height:1.2;}
+.subtitle{margin:6px 0 0;color:var(--text-muted);font-size:1.0rem;font-weight:300;}
+.muted{font-weight:300;color:var(--text-muted);font-size:0.9rem}
+
+/* banners */
+.maintenance-banner, .announcement-banner { position: fixed; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width:1100px; padding:12px 16px; border-radius:10px; z-index:3000; box-shadow:0 8px 30px rgba(0,0,0,0.5); display:none; gap:12px; }
+.maintenance-banner { top:0; background: linear-gradient(90deg, #FFB199, #FF7A9A); color:#08121a; }
+.announcement-banner { top:68px; background: linear-gradient(90deg, #0bdfff, #00ffb2); color:#021122; }
+.small-btn{padding:8px 10px;border-radius:8px;background:rgba(0,0,0,0.06);border:1px solid rgba(255,255,255,0.06);color:var(--text-high);}
+
+/* cards */
+.card{background: var(--bg-primary); border-radius:var(--radius); padding:22px; border: 1px solid var(--border-soft); box-shadow:0 8px 24px rgba(0,0,0,0.45), 0 0 8px rgba(0,163,255,0.04); transition: all 0.25s;}
+.card:hover{transform:translateY(-3px); box-shadow:0 12px 36px rgba(0,0,0,0.6);}
+
+/* layout */
+#mainContent { display:grid; grid-template-columns:1fr 1.45fr; gap:var(--gap); }
+#adminPanelView { display:none; } /* admin removed from user bundle */
+.left-panel, .right-panel { display:flex; flex-direction:column; gap:var(--gap); }
+
+/* avatar */
+.avatar{width:88px;height:88px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;background:linear-gradient(135deg, rgba(0,163,255,0.12), rgba(0,255,140,0.06));color:var(--text-high);}
+
+/* meter */
+.meter{display:flex;flex-direction:column;gap:10px;border-radius:12px;overflow:hidden;margin-bottom:8px;}
+.value{padding:14px 18px;display:flex;justify-content:space-between;align-items:center;}
+.clicks,.money{font-size:2.0rem;line-height:1;font-weight:700;color:var(--accent-primary);}
+
+/* progress */
+.progressRow{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+.progressLabel{font-size:0.82rem;color:var(--text-muted);display:flex;justify-content:space-between;}
+.progress{height:10px;background:rgba(255,255,255,0.04);border-radius:8px;overflow:hidden;}
+.progress .fill{height:100%;background:linear-gradient(90deg,var(--accent-primary),var(--accent-success));width:0%;transition:width .25s ease;}
+
+/* badges */
+.badge{display:inline-block;padding:4px 8px;border-radius:8px;font-size:0.8rem;background:rgba(255,255,255,0.03);color:var(--text-muted);}
+.premium-badge{background:linear-gradient(90deg,#FFD400,#FF9A00);color:#08121a;font-weight:700;}
+.coupon-active-badge{background:linear-gradient(90deg,#7be3ff,#00ffd1);color:#021122;font-weight:700;padding:6px 10px;border-radius:10px;}
+
+/* cta */
+.cta{padding:20px;font-size:1.15rem;border-radius:10px;background:linear-gradient(90deg,var(--accent-primary),#00C2FF);color:#020926;border:none;cursor:pointer;box-shadow:0 8px 24px rgba(0,163,255,0.12);}
+.cta:active{transform:translateY(1px) scale(.995);}
+.cta[disabled]{opacity:.6;cursor:not-allowed;}
+
+/* form */
+.payform{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.payform .withdrawalBtn,.payform .withdrawal-info,.payform .smallNote{grid-column:span 2;}
+.ibanRow{display:flex;align-items:center;}
+.clearIbanBtn{margin-left:10px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid var(--border-soft);color:var(--text-high);cursor:pointer;}
+
+/* misc */
+.highlight{color:var(--accent-primary);font-weight:600;font-size:1.02rem;margin-bottom:12px;}
+.hint{margin-top:12px;font-size:.8rem;color:var(--text-muted);text-align:center;}
+.small-note{margin-top:10px;font-size:.9rem;color:var(--text-muted);}
+
+/* auth */
+.form-container.auth-form{max-width:420px;margin:auto;}
+.cta-login{margin-top:10px;width:100%;padding:12px;border-radius:8px;background:var(--accent-primary);color:#041022;border:none;}
+
+/* overlays */
+.success-overlay{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:999;background:rgba(10,25,41,0.95);backdrop-filter:blur(5px);}
+
+/* toasts */
+.toast{position:fixed;right:20px;bottom:20px;min-width:220px;max-width:360px;background:rgba(10,20,40,0.95);color:var(--text-high);padding:12px 16px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.6);z-index:2000;border:1px solid rgba(255,255,255,0.03);display:flex;gap:12px;align-items:center;}
+.toast.success{border-left:6px solid var(--accent-success);}
+.toast.error{border-left:6px solid var(--accent-danger);}
+
+/* responsive */
+@media (max-width:1000px){
+  body{padding:16px;}
+  .page{max-width:900px;}
+  #mainContent{grid-template-columns:1fr;gap:20px;}
+  .left-panel{order:1;}
+  .right-panel{order:2;}
+  .payform{grid-template-columns:1fr;gap:12px;}
+  .payform .field, .payform .ibanBlock{grid-column:span 1;}
+  .value{flex-direction:column;align-items:flex-start;}
+  .clicks,.money{font-size:1.8rem;}
+}
+
+@media (max-width:480px){
+  body{padding:10px}
+  .header{margin-bottom:26px;}
+  .logo{font-size:1.4rem;}
+  .card{padding:16px;border-radius:12px;}
+  .avatar{width:56px;height:56px;font-size:1.2rem;}
+  .name{font-size:1.2rem;}
+  .cta{font-size:1rem;padding:14px;}
+  .clicks,.money{font-size:1.5rem;}
+  .admin-link{font-size:0.85rem;top:8px;}
+  .announcement-banner{padding:8px;font-size:0.88rem;}
+}
+
+/* small helpers */
+.link-btn{background:none;border:none;color:var(--accent-primary);cursor:pointer;padding:0;}
+.small-cta{padding:10px 12px;border-radius:8px;background:var(--accent-success);color:#021122;border:none;}
