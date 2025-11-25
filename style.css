@@ -36,6 +36,35 @@ body{display:flex;align-items:center;justify-content:center;padding:24px}
 .card{background: var(--bg-primary); border-radius:var(--radius); padding:22px; border: 1px solid var(--border-soft); box-shadow:0 8px 24px rgba(0,0,0,0.45), 0 0 8px rgba(0,163,255,0.04); transition: all 0.25s;}
 .card:hover{transform:translateY(-3px); box-shadow:0 12px 36px rgba(0,0,0,0.6);}
 
+admin-links{
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 4000;
+}
+
+/* override admin-link positioning (since original .admin-link was absolute) */
+.admin-links .admin-link{
+  position: static;
+  transform: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.06);
+  border: 1px solid rgba(255,255,255,0.06);
+  color: var(--text-muted);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* make primary (ilk) buton daha dikkat çekici */
+.admin-links .admin-link.primary{
+  background: linear-gradient(90deg, var(--accent-primary), #00C2FF);
+  color: #021122;
+  box-shadow: 0 6px 18px rgba(0,163,255,0.08);
+}
 /* layout */
 #mainContent { display:grid; grid-template-columns:1fr 1.45fr; gap:var(--gap); }
 #adminPanelView { display:none; } /* admin removed from user bundle */
@@ -116,4 +145,5 @@ body{display:flex;align-items:center;justify-content:center;padding:24px}
 
 /* small helpers */
 .link-btn{background:none;border:none;color:var(--accent-primary);cursor:pointer;padding:0;}
+
 .small-cta{padding:10px 12px;border-radius:8px;background:var(--accent-success);color:#021122;border:none;}
